@@ -1,107 +1,91 @@
-# Ex 6(c) Dijkstra’s Algorithm
-## DATE:10-05-2025
+# Ex 6(d) Travelling Salesman Problem
+## DATE:12-05-2025
 ## AIM:
-To write a C Program to implement Dijkstra's Algorithm to find the shortest path
-
+To write a C Program to implement Travelling Salesman Problem for finding shortest path.
 ## Algorithm
-1. Define INFINITY = 9999, MAX = 10; declare G[MAX][MAX], distance[], visited[], pred[].
-2. Input number of nodes n and the adjacency matrix; replace 0s with INFINITY; read starting node u.
-3. Initialize distance[i] = G[u][i], pred[i] = u, visited[i] = 0; set distance[u] = 0 and mark u visited. 
-4. Repeat for n-1 nodes: find nearest unvisited node, mark it visited, and update distances of neighbors.
-5. For each node except start, print shortest distance and path using pred[].  
+1. Declare global variables: a[10][10], visited[10] (all 0), n, and cost = 0.
+2. In get(), read number of cities n, input cost matrix a[i][j], and initialize visited[].
+3. In mincost(city), mark city visited, print it, find next city using least(city), update cost, and recurse.
+4. In least(city), check unvisited cities, find one with minimum cost, return its index. 
+5. In main, call get(), then mincost(0), and finally put() to print total minimum cost. 
 
 ## Program:
 ```
 /*
-Program to implement Dijkstra's Algorithm 
-Developed by: SHASHANK R 
-RegisterNumber: 2122233230205
+Program to implement Travelling Salesman Problem for finding shortest path
+Developed by: SHIVRAJ R 
+RegisterNumber: 212223110051
 */
 #include<stdio.h>
-#define INFINITY 9999
-#define MAX 10
- 
-void dijkstra(int G[MAX][MAX],int n,int startnode);
- 
+int a[10][10],visited[10],n,cost=0;
+
+void get()
+{
+	int i,j;
+		scanf("%d",&n);
+	for(i=0;i < n;i++)
+	{
+			for( j=0;j < n;j++)
+			scanf("%d",&a[i][j]);
+		visited[i]=0;
+	}
+	}
+
+void mincost(int city)
+{
+	int ncity;
+	int least(int);
+	visited[city]=1;	
+	printf("%d -->",city+1);
+	ncity=least(city);
+	if(ncity==999)
+	{
+		ncity=0;
+		printf("%d",ncity+1);
+		cost+=a[city][ncity];
+		return;
+	}
+	mincost(ncity);
+}
+
+int least(int c)
+{
+	int i,nc=999;
+	int min=999,kmin;
+	for(i=0;i < n;i++)
+	{
+		if((a[c][i]!=0)&&(visited[i]==0))
+			if(a[c][i] < min)
+			{
+				min=a[i][0]+a[c][i];
+				kmin=a[c][i];
+				nc=i;
+			}
+	}
+	if(min!=999)
+		cost+=kmin;
+	return nc;
+}
+
+void put()
+{
+	printf("\n\nMinimum cost:%d",cost);
+	}
+
 int main()
 {
-int G[MAX][MAX],i,j,n,u;
-scanf("%d",&n);
-for(i=0;i<n;i++)
-for(j=0;j<n;j++)
-scanf("%d",&G[i][j]);
-scanf("%d",&u);
-dijkstra(G,n,u);
-return 0;
-}
- 
-void dijkstra(int G[MAX][MAX],int n,int startnode)
-{
- 
-int cost[MAX][MAX],distance[MAX],pred[MAX];
-int visited[MAX],count,mindistance,nextnode,i,j;
-//pred[] stores the predecessor of each node
-//count gives the number of nodes seen so far
-//create the cost matrix
-for(i=0;i<n;i++)
-for(j=0;j<n;j++)
-if(G[i][j]==0)
-cost[i][j]=INFINITY;
-else
-cost[i][j]=G[i][j];
-//initialize pred[],distance[] and visited[]
-for(i=0;i<n;i++)
-{
-distance[i]=cost[startnode][i];
-pred[i]=startnode;
-visited[i]=0;
-}
-distance[startnode]=0;
-visited[startnode]=1;
-count=1;
-while(count<n-1)
-{
-mindistance=INFINITY;
-//nextnode gives the node at minimum distance
-for(i=0;i<n;i++)
-if(distance[i]<mindistance&&!visited[i])
-{
-mindistance=distance[i];
-nextnode=i;
-}
-//check if a better path exists through nextnode
-visited[nextnode]=1;
-for(i=0;i<n;i++)
-if(!visited[i])
-if(mindistance+cost[nextnode][i]<distance[i])
-{
-distance[i]=mindistance+cost[nextnode][i];
-pred[i]=nextnode;
-}
-count++;
-}
- 
-//print the path and distance of each node
-for(i=0;i<n;i++)
-if(i!=startnode)
-{
-printf("Distance of node%d=%d\n",i,distance[i]);
-printf("Path=%d",i);
-j=i;
-do
-{
-j=pred[j];
-printf("<-%d",j);
-}while(j!=startnode);
-}
-}
+	get();
+	mincost(0);
+	put();
+	return 0;
+	}
 
 ```
 
 ## Output:
 
-![image](https://github.com/user-attachments/assets/2e7e2afe-db80-42f0-97c7-b857b2b1b0f4)
+![image](https://github.com/user-attachments/assets/3c143d65-298c-41fb-9de1-67213ba4b210)
 
 
 ## Result:
-Thus, the Program to implement Dijkstra's Algorithm to find the shortest path is implemented successfully.
+Thus, the C program to implement Travelling Salesman Problem for finding shortest path is implemented successfully.
